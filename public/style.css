@@ -27,3 +27,25 @@ canvas {
 .score-player2 {
     right: 25%;
 }
+
+#menu, #settingsMenu {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+#menu button, #settingsMenu button {
+    margin: 10px;
+}
+
+#settingsMenu {
+    display: flex;
+    flex-direction: column;
+}
+
+#settingsMenu label, #settingsMenu input {
+    margin: 10px;
+}

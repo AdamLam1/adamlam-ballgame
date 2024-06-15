@@ -6,17 +6,23 @@ const originalHeight = 400;
 canvas.width = originalWidth;
 canvas.height = originalHeight;
 
-const paddleWidth = 10, paddleHeight = 100, ballSize = 10;
+let gamePaused = false;
+let menuVisible = true;
+
+const paddleWidth = 10, paddleHeight = 100;
 let paddle1Y = (canvas.height - paddleHeight) / 2;
 let paddle2Y = (canvas.height - paddleHeight) / 2;
 let ballX = canvas.width / 2, ballY = canvas.height / 2;
-let ballSpeedX = 5, ballSpeedY = 5;
+let ballSpeedX = parseInt(document.getElementById('ballSpeed').value);
+let ballSpeedY = parseInt(document.getElementById('ballSpeed').value);
+let ballSize = parseInt(document.getElementById('ballSize').value);
 
 let paddle1MoveUp = false, paddle1MoveDown = false;
 let paddle2MoveUp = false, paddle2MoveDown = false;
 
 let scorePlayer1 = 0;
 let scorePlayer2 = 0;
+
 
 function draw() {
     context.clearRect(0, 0, canvas.width, canvas.height);
@@ -45,6 +51,7 @@ function draw() {
 }
 
 function update() {
+
     ballX += ballSpeedX;
     ballY += ballSpeedY;
 
@@ -88,17 +95,78 @@ function update() {
 }
 
 function resetBall() {
+    ballSpeedX = parseInt(document.getElementById('ballSpeed').value);
+    ballSpeedY = parseInt(document.getElementById('ballSpeed').value);
+    ballSize = parseInt(document.getElementById('ballSize').value);
     ballX = canvas.width / 2;
     ballY = canvas.height / 2;
-    ballSpeedX = -ballSpeedX;
-    ballSpeedY = (Math.random() > 0.5 ? 1 : -1) * 5;
+    ballSpeedX = (Math.random() > 0.5 ? 1 : -1) * ballSpeedX;
+    ballSpeedY = (Math.random() > 0.5 ? 1 : -1) * ballSpeedY;
 }
 
 function gameLoop() {
-    draw();
-    update();
+    if (!gamePaused) {
+        draw();
+        update();
+    }
     requestAnimationFrame(gameLoop);
 }
+
+function showMenu() {
+    document.getElementById('menu').style.display = 'block';
+    gamePaused = true;
+    menuVisible = true;
+}
+
+function hideMenu() {
+    document.getElementById('menu').style.display = 'none';
+    gamePaused = false;
+    menuVisible = false;
+}
+
+function showSettings() {
+    document.getElementById('settingsMenu').style.display = 'flex';
+}
+
+function hideSettings() {
+    document.getElementById('settingsMenu').style.display = 'none';
+}
+
+document.getElementById('startBtn').addEventListener('click', function() {
+    hideMenu();
+    gamePaused = false;
+});
+
+document.getElementById('settingsBtn').addEventListener('click', function() {
+    hideMenu();
+    showSettings();
+});
+
+
+document.getElementById('backBtn').addEventListener('click', function() {
+    hideSettings();
+    showMenu();
+});
+
+document.getElementById('quitBtn').addEventListener('click', function() {
+    resetBall();
+    hideMenu(); 
+    hideSettings();
+    scorePlayer1 = 0;
+    scorePlayer2 = 0;
+    showMenu();
+    draw();
+});
+
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        if (!menuVisible) {
+            hideSettings();
+            showMenu();
+            gamePaused = true;
+        }
+    }
+});
 
 document.addEventListener('keydown', (e) => {
     switch (e.key) {
@@ -135,3 +203,5 @@ document.addEventListener('keyup', (e) => {
 });
 
 gameLoop();
+hideSettings();
+showMenu();
