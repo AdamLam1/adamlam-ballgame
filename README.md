@@ -27,7 +27,7 @@ This project is a simple ball game where players can interact with the game envi
 ### Steps
 1. Clone the repository:
     ```bash
-    git clone https://github.com/yourusername/ballgame.git
+    git clone https://github.com/adamlam1/adamlam-ballgame.git
     ```
 2. Navigate to the project directory:
     ```bash
